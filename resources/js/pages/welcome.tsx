@@ -1,113 +1,18 @@
-import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowRight, Globe2, Leaf, Menu, Recycle, Sprout } from 'lucide-react';
-import { useState } from 'react';
-import { dashboard, login, register } from '@/routes';
+import { Head, Link } from '@inertiajs/react';
+import { ArrowRight, Globe2, Recycle, Sprout } from 'lucide-react';
 import LocationMap, { type Location } from '@/components/location-map';
+import SiteLayout from '@/layouts/site-layout';
 
 type Props = {
     locations: Location[];
 };
 
-const navLinks = [
-    { label: 'About us', href: '#about' },
-    { label: 'Solutions', href: '#solutions' },
-    { label: 'Sustainability', href: '#sustainability' },
-    { label: 'Find us', href: '#map' },
-    { label: 'Contact', href: '#contact' },
-];
-
 export default function Welcome({ locations }: Props) {
-    const [menuOpen, setMenuOpen] = useState(false);
-    const { auth } = usePage().props;
-
     return (
         <>
             <Head title="Growing responsibly, together" />
 
-            <div className="min-h-screen scroll-smooth bg-[#faf8f3] font-sans text-stone-900">
-                <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#12291b]/80 backdrop-blur-md">
-                    <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 lg:px-8">
-                        <a
-                            href="#top"
-                            className="flex items-center gap-2 text-lg font-semibold tracking-tight text-white"
-                        >
-                            <Leaf
-                                className="size-6 text-[#8fc17a]"
-                                aria-hidden
-                            />
-                            GroMedia
-                        </a>
-
-                        <nav className="hidden items-center gap-8 md:flex">
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.label}
-                                    href={link.href}
-                                    className="text-sm text-white/80 transition-colors hover:text-white"
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                        </nav>
-
-                        <div className="hidden items-center gap-4 md:flex">
-                            {auth.user ? (
-                                <Link
-                                    href={dashboard()}
-                                    className="text-sm text-white/80 transition-colors hover:text-white"
-                                >
-                                    Dashboard
-                                </Link>
-                            ) : (
-                                <Link
-                                    href={login()}
-                                    className="text-sm text-white/80 transition-colors hover:text-white"
-                                >
-                                    Log in
-                                </Link>
-                            )}
-                            <a
-                                href="#contact"
-                                className="rounded-full bg-[#8fc17a] px-5 py-2 text-sm font-medium text-[#12291b] transition-colors hover:bg-[#a3d18f]"
-                            >
-                                Get in touch
-                            </a>
-                        </div>
-
-                        <button
-                            type="button"
-                            className="text-white md:hidden"
-                            onClick={() => setMenuOpen((open) => !open)}
-                            aria-label="Toggle menu"
-                            aria-expanded={menuOpen}
-                        >
-                            <Menu className="size-6" aria-hidden />
-                        </button>
-                    </div>
-
-                    {menuOpen ? (
-                        <nav className="flex flex-col gap-1 border-t border-white/10 bg-[#12291b] px-5 py-4 md:hidden">
-                            {navLinks.map((link) => (
-                                <a
-                                    key={link.label}
-                                    href={link.href}
-                                    onClick={() => setMenuOpen(false)}
-                                    className="rounded-lg px-3 py-2 text-sm text-white/80 hover:bg-white/5 hover:text-white"
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                            <a
-                                href="#contact"
-                                onClick={() => setMenuOpen(false)}
-                                className="mt-2 rounded-full bg-[#8fc17a] px-5 py-2 text-center text-sm font-medium text-[#12291b]"
-                            >
-                                Get in touch
-                            </a>
-                        </nav>
-                    ) : null}
-                </header>
-
+            <SiteLayout>
                 <section
                     id="top"
                     className="relative flex min-h-screen items-center justify-center"
@@ -171,13 +76,13 @@ export default function Welcome({ locations }: Props) {
                                 foundation of success. Our customers are more
                                 than customers, they are partners in growing.
                             </p>
-                            <a
-                                href="#sustainability"
+                            <Link
+                                href="/about"
                                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#2f5d3a] hover:gap-3"
                             >
                                 Read more
                                 <ArrowRight className="size-4" aria-hidden />
-                            </a>
+                            </Link>
                         </div>
                     </article>
 
@@ -198,13 +103,13 @@ export default function Welcome({ locations }: Props) {
                                 solution or anything else. We are here to help
                                 you grow.
                             </p>
-                            <a
-                                href="#contact"
+                            <Link
+                                href="/contact"
                                 className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-[#2f5d3a] hover:gap-3"
                             >
                                 Reach out to us
                                 <ArrowRight className="size-4" aria-hidden />
-                            </a>
+                            </Link>
                         </div>
                     </article>
                 </section>
@@ -225,7 +130,10 @@ export default function Welcome({ locations }: Props) {
                             </p>
                         </div>
 
-                        <div className="mt-14 grid gap-8 sm:grid-cols-3">
+                        <div
+                            id="solutions"
+                            className="mt-14 grid gap-8 sm:grid-cols-3"
+                        >
                             {[
                                 {
                                     icon: Globe2,
@@ -295,7 +203,10 @@ export default function Welcome({ locations }: Props) {
                     <LocationMap locations={locations} />
                 </section>
 
-                <section id="contact" className="px-5 pb-20 lg:px-8 lg:pb-28">
+                <section
+                    id="newsletter"
+                    className="px-5 pb-20 lg:px-8 lg:pb-28"
+                >
                     <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl bg-[#e8f0e3] px-8 py-14 lg:px-16 lg:py-20">
                         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
                             <div>
@@ -330,87 +241,7 @@ export default function Welcome({ locations }: Props) {
                         </div>
                     </div>
                 </section>
-
-                <footer className="bg-[#12291b] px-5 py-16 text-white/70 lg:px-8">
-                    <div className="mx-auto max-w-7xl">
-                        <p className="mb-12 max-w-3xl text-5xl leading-tight font-semibold tracking-tight text-white/15 lg:text-7xl">
-                            Growing responsibly, together
-                        </p>
-
-                        <div className="grid gap-10 border-t border-white/10 pt-12 sm:grid-cols-2 lg:grid-cols-4">
-                            {[
-                                {
-                                    title: 'About us',
-                                    links: ['Our story', 'Projects'],
-                                },
-                                {
-                                    title: 'Job & career',
-                                    links: ['Job openings', 'Why work here'],
-                                },
-                                {
-                                    title: 'Downloads',
-                                    links: ['Brochures', 'Sales conditions'],
-                                },
-                                {
-                                    title: 'Contact us',
-                                    links: [
-                                        'Sales representatives',
-                                        'Management',
-                                    ],
-                                },
-                            ].map((column) => (
-                                <div key={column.title}>
-                                    <h3 className="font-medium text-white">
-                                        {column.title}
-                                    </h3>
-                                    <ul className="mt-4 space-y-2 text-sm">
-                                        {column.links.map((link) => (
-                                            <li key={link}>
-                                                <a
-                                                    href="#top"
-                                                    className="transition-colors hover:text-white"
-                                                >
-                                                    {link}
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="mt-12 flex flex-col justify-between gap-4 border-t border-white/10 pt-8 text-sm sm:flex-row">
-                            <p>
-                                Copyright © {new Date().getFullYear()} GroMedia
-                                A/S
-                            </p>
-                            <div className="flex flex-wrap gap-6">
-                                <a href="#top" className="hover:text-white">
-                                    Terms &amp; Conditions
-                                </a>
-                                <a href="#top" className="hover:text-white">
-                                    Privacy Policy
-                                </a>
-                                {auth.user ? (
-                                    <Link
-                                        href={dashboard()}
-                                        className="hover:text-white"
-                                    >
-                                        Dashboard
-                                    </Link>
-                                ) : (
-                                    <Link
-                                        href={register()}
-                                        className="hover:text-white"
-                                    >
-                                        Register
-                                    </Link>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+            </SiteLayout>
         </>
     );
 }
